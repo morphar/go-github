@@ -341,9 +341,13 @@ func (r *Response) populatePageValues() {
 			if err != nil {
 				continue
 			}
-			page := url.Query().Get("page")
-			if page == "" {
-				continue
+
+			var page string
+			if page = url.Query().Get("page"); page == "" {
+				// since is used for at least GET /repositories
+				if page = url.Query().Get("since"); page == "" {
+					continue
+				}
 			}
 
 			for _, segment := range segments[1:] {
